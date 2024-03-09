@@ -6,14 +6,15 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "user")
 @Getter
 @Setter
-@Entity
-@Table(name = "user", schema = "issuementor")
 public class User {
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "name", length = 50)
     private String name;
@@ -30,19 +31,18 @@ public class User {
     @Column(name = "phone", length = 20)
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address address;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
-
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @Lob
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private String role;
-
 }

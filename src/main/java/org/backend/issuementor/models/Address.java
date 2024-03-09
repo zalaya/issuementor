@@ -1,20 +1,18 @@
 package org.backend.issuementor.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "address")
 @Getter
 @Setter
-@Entity
-@Table(name = "address", schema = "issuementor")
 public class Address {
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "street")
     private String street;
@@ -27,5 +25,4 @@ public class Address {
 
     @Column(name = "country", length = 100)
     private String country;
-
 }

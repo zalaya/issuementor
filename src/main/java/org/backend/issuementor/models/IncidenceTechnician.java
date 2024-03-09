@@ -4,22 +4,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "incidence_technician")
 @Getter
 @Setter
-@Entity
-@Table(name = "incidence_technician", schema = "issuementor")
 public class IncidenceTechnician {
     @EmbeddedId
     private IncidenceTechnicianId id;
 
+    @ManyToOne
     @MapsId("incidenceId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "incidence_id", nullable = false)
+    @JoinColumn(name = "incidence_id")
     private Incidence incidence;
 
+    @ManyToOne
     @MapsId("technicianId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "technician_id", nullable = false)
+    @JoinColumn(name = "technician_id")
     private User technician;
-
 }

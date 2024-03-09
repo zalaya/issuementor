@@ -4,18 +4,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "attachment")
 @Getter
 @Setter
-@Entity
-@Table(name = "attachment", schema = "issuementor")
 public class Attachment {
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "incidence_id")
-    private Incidence incidence;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -23,4 +20,7 @@ public class Attachment {
     @Column(name = "url")
     private String url;
 
+    @ManyToOne
+    @JoinColumn(name = "incidence_id")
+    private Incidence incidence;
 }
