@@ -13,15 +13,12 @@ public class Address {
     @Column(name = "street")
     private String street;
 
-    @Column(name = "city")
+    @Column(name = "city", length = 100)
     private String city;
 
-    @Column(name = "province")
-    private String province;
-
-    @Column(name = "postal_code")
-    private String postalCode;
-
-    @Column(name = "country")
+    @Column(name = "country", length = 100)
     private String country;
+
+    @Column(name = "code", length = 20)
+    private String code;
 }

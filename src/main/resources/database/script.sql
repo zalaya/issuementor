@@ -6,8 +6,7 @@ CREATE TABLE addresses (
                            id BIGINT PRIMARY KEY AUTO_INCREMENT,
                            street VARCHAR(255),
                            city VARCHAR(100),
-                           province VARCHAR(100),
-                           postal_code VARCHAR(20),
+                           code VARCHAR(20),
                            country VARCHAR(100)
 );
 
@@ -60,19 +59,28 @@ CREATE TABLE product_categories (
 
 CREATE TABLE incidences (
                             id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                            user_id BIGINT NOT NULL,
-                            product_id BIGINT NOT NULL,
-                            title VARCHAR(100) NOT NULL,
+                            name VARCHAR(100) NOT NULL,
                             description TEXT,
-                            image_url VARCHAR(255),
-                            incidence_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            image VARCHAR(255),
+                            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             priority ENUM('low', 'medium', 'high') DEFAULT 'low',
-                            status ENUM('open', 'closed', 'in_progress') DEFAULT 'open',
-                            close_date TIMESTAMP,
-                            technician_id BIGINT,
-                            FOREIGN KEY (user_id) REFERENCES users(id),
-                            FOREIGN KEY (product_id) REFERENCES products(id),
-                            FOREIGN KEY (technician_id) REFERENCES users(id)
+                            status ENUM('open', 'in_progress', 'closed') DEFAULT 'open'
+);
+
+CREATE TABLE incidence_users (
+                                 incidence_id BIGINT,
+                                 user_id BIGINT,
+                                 PRIMARY KEY (incidence_id, user_id),
+                                 FOREIGN KEY (incidence_id) REFERENCES incidences(id),
+                                 FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE incidence_technicians (
+                                       incidence_id BIGINT,
+                                       technician_id BIGINT,
+                                       PRIMARY KEY (incidence_id, technician_id),
+                                       FOREIGN KEY (incidence_id) REFERENCES incidences(id),
+                                       FOREIGN KEY (technician_id) REFERENCES users(id)
 );
 
 CREATE TABLE comments (
@@ -88,8 +96,8 @@ CREATE TABLE comments (
 CREATE TABLE attachments (
                              id BIGINT PRIMARY KEY AUTO_INCREMENT,
                              incidence_id BIGINT NOT NULL,
-                             file_name VARCHAR(255),
-                             file_url VARCHAR(255),
+                             name VARCHAR(255),
+                             url VARCHAR(255),
                              FOREIGN KEY (incidence_id) REFERENCES incidences(id)
 );
 
