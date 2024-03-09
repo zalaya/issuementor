@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "attachment")
+@Table(name = "attachments")
 @Getter
 @Setter
 public class Attachment {
