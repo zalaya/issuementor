@@ -1,22 +1,23 @@
 package org.backend.issuementor.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "categories")
+@Table(name = "categories", schema = "issuementor")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "url")
-    private String url;
+    @Lob
+    @Column(name = "description")
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "incidence_id")
-    private Incidence incidence;
 }

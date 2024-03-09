@@ -1,22 +1,24 @@
 package org.backend.issuementor.models;
 
 import jakarta.persistence.*;
-import org.backend.issuementor.enumerators.Priority;
-import org.backend.issuementor.enumerators.Status;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "incidences")
+@Table(name = "incidences", schema = "issuementor")
 public class Incidence {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "name", length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
@@ -24,11 +26,14 @@ public class Incidence {
     private String image;
 
     @Column(name = "date")
-    private Timestamp date;
+    private Instant date;
 
+    @Lob
     @Column(name = "priority")
-    private Priority priority;
+    private String priority;
 
+    @Lob
     @Column(name = "status")
-    private Status status;
+    private String status;
+
 }
