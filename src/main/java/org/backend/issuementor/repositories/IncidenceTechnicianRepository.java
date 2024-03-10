@@ -5,4 +5,5 @@ import org.backend.issuementor.models.IncidenceTechnicianId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IncidenceTechnicianRepository extends JpaRepository<IncidenceTechnician, IncidenceTechnicianId> {
+
 }
