@@ -1,6 +1,5 @@
 package org.backend.issuementor.services.implementations;
 
-import org.backend.issuementor.models.User;
 import org.backend.issuementor.repositories.UserRepository;
 import org.backend.issuementor.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
