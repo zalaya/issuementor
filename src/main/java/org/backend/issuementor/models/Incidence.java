@@ -3,6 +3,8 @@ package org.backend.issuementor.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.backend.issuementor.enumerators.Priority;
+import org.backend.issuementor.enumerators.Status;
 
 import java.time.LocalDate;
 
@@ -30,9 +32,9 @@ public class Incidence {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "priority")
-    private String priority;
+    private Priority priority;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 }

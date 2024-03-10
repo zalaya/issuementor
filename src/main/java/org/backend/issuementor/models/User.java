@@ -3,6 +3,7 @@ package org.backend.issuementor.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.backend.issuementor.enumerators.Role;
 
 import java.time.LocalDate;
 
@@ -25,8 +26,11 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 100, unique = true)
     private String email;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "phone", length = 20)
     private String phone;
@@ -34,15 +38,15 @@ public class User {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     private Company company;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private String role;
 }

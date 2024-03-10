@@ -21,6 +21,7 @@ CREATE TABLE users (
     surname VARCHAR(50),
     birth_date DATE,
     email VARCHAR(100),
+    password VARCHAR(100),
     phone VARCHAR(20),
     creation_date DATE,
     role ENUM('admin', 'technician', 'user'),
