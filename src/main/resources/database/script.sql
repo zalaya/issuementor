@@ -104,4 +104,14 @@ CREATE TABLE product_categories (
     PRIMARY KEY (product_id, category_id),
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
-)
+);
+
+CREATE TABLE comments (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT NOT NULL,
+    incidence_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (incidence_id) REFERENCES incidences(id)
+);
