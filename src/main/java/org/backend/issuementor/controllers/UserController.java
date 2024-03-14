@@ -31,8 +31,7 @@ public class UserController extends AbstractController {
         user.setPassword(encode(user.getPassword()));
 
         return new ResponseEntity<>(
-            user,
-            HttpStatus.OK
+            user, HttpStatus.OK
         );
     }
 
@@ -45,8 +44,7 @@ public class UserController extends AbstractController {
         }
 
         return new ResponseEntity<>(
-            jwtService.generate(databaseUser.get().getId()),
-            HttpStatus.OK
+            jwtService.generate(databaseUser.get().getId()), HttpStatus.OK
         );
     }
 }
