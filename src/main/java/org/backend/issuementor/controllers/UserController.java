@@ -1,6 +1,7 @@
 package org.backend.issuementor.controllers;
 
 import org.backend.issuementor.models.User;
+import org.backend.issuementor.services.JWTService;
 import org.backend.issuementor.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,21 +19,19 @@ public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JWTService jwtService;
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
         if (userService.existsByEmail(user.getEmail())) {
-            return new ResponseEntity<>(
-                "An account with this email already exists.",
-                HttpStatus.CONFLICT
-            );
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        user.setPassword(
-            encode(user.getPassword())
-        );
+        user.setPassword(encode(user.getPassword()));
 
         return new ResponseEntity<>(
-            "The account has been successfully created.",
+            user,
             HttpStatus.OK
         );
     }
@@ -42,14 +41,11 @@ public class UserController extends AbstractController {
         Optional<User> databaseUser = userService.findByEmail(user.getEmail());
 
         if (databaseUser.isEmpty() || match(user, databaseUser.get())) {
-            return new ResponseEntity<>(
-                "The account credentials are not valid.",
-                HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>(
-            databaseUser.get(),
+            jwtService.generate(databaseUser.get().getId()),
             HttpStatus.OK
         );
     }
