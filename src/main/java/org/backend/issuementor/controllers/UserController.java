@@ -33,6 +33,7 @@ public class UserController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -40,7 +41,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody User user) {
         Optional<User> databaseUser = userService.findByEmail(user.getEmail());
 
-        if (databaseUser.isEmpty() || passwordEncoder.matches(user.getPassword(), databaseUser.get().getPassword())) {
+        if (databaseUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
