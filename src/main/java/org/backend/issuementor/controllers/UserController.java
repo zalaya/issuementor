@@ -1,5 +1,7 @@
 package org.backend.issuementor.controllers;
 
+import org.backend.issuementor.dtos.CredentialsDTO;
+import org.backend.issuementor.mappers.UserMapper;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
 import org.backend.issuementor.services.UserService;
@@ -33,15 +35,20 @@ public class UserController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.save(user);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(UserMapper.toUserDTO(user), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        Optional<User> databaseUser = userService.findByEmail(user.getEmail());
+    public ResponseEntity<?> login(@RequestBody CredentialsDTO credentials) {
+        Optional<User> databaseUser = userService.findByEmail(credentials.getEmail());
 
-        if (databaseUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), databaseUser.get().getPassword())) {
+        if (databaseUser.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (!passwordEncoder.matches(credentials.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
