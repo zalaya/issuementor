@@ -25,6 +25,6 @@ public class Address {
     @Column(name = "country", length = 100, nullable = false)
     private String country;
 
-    @Column(name = "postal_code", length = 20, unique = true, nullable = false)
+    @Column(name = "postal_code", length = 20, nullable = false)
     private String postalCode;
 }

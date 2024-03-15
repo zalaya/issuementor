@@ -17,7 +17,7 @@ CREATE TABLE addresses (
     street VARCHAR(150) NOT NULL,
     city VARCHAR(100) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    postal_code VARCHAR(20) UNIQUE NOT NULL
+    postal_code VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE companies (
@@ -36,7 +36,7 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL,
     phone VARCHAR(20) UNIQUE NOT NULL,
     birth_date DATE,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP,
     login_date TIMESTAMP,
     role_id BIGINT NOT NULL,
     gender_id BIGINT NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE incidences (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP,
     priority_id BIGINT NOT NULL,
     status_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE attachments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP,
     incidence_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     FOREIGN KEY (incidence_id) REFERENCES incidences(id),
@@ -110,7 +110,7 @@ CREATE TABLE product_categories (
 CREATE TABLE comments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     content TEXT NOT NULL,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP,
     user_id BIGINT NOT NULL,
     incidence_id BIGINT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),

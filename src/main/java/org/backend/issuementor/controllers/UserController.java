@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +37,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
+        user.setCreationDate(Timestamp.from(Instant.now()));
         userService.saveEncoded(user);
 
         return new ResponseEntity<>(UserMapper.toUserDTO(user), HttpStatus.OK);
@@ -51,6 +54,9 @@ public class UserController {
         if (!passwordEncoder.matches(credentials.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+        databaseUser.get().setLoginDate(Timestamp.from(Instant.now()));
+        userService.saveUnencoded(databaseUser.get());
 
         return new ResponseEntity<>(jwtService.generate(databaseUser.get().getId()), HttpStatus.OK);
     }
