@@ -1,6 +1,7 @@
 package org.backend.issuementor.controllers;
 
 import org.backend.issuementor.dtos.CredentialsDTO;
+import org.backend.issuementor.dtos.UserDTO;
 import org.backend.issuementor.mappers.UserMapper;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
@@ -34,8 +35,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
+        userService.saveEncoded(user);
 
         return new ResponseEntity<>(UserMapper.toUserDTO(user), HttpStatus.OK);
     }

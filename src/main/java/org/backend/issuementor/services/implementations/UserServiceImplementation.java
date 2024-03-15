@@ -4,6 +4,7 @@ import org.backend.issuementor.models.User;
 import org.backend.issuementor.repositories.UserRepository;
 import org.backend.issuementor.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class UserServiceImplementation implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -24,7 +28,14 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User save(User user) {
+    public User saveEncoded(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User saveUnencoded(User user) {
         return userRepository.save(user);
     }
 }

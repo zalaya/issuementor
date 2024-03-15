@@ -19,7 +19,7 @@ public class Company {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 }
