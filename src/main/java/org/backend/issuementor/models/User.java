@@ -59,6 +59,6 @@ public class User {
     private Address address;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id")
     private Company company;
 }
