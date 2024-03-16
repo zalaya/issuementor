@@ -45,11 +45,7 @@ public class UserController {
         request.setCreationDate(Timestamp.from(Instant.now()));
         User user = userService.saveEncoded(mapperService.map(request, User.class));
 
-        return new ResponseEntity<>(new SignupResponseDTO(
-            user.getId(),
-            user.getUsername(),
-            user.getEmail()
-        ), HttpStatus.OK);
+        return new ResponseEntity<>(mapperService.map(user, SignupResponseDTO.class), HttpStatus.OK);
     }
 
     @PostMapping("/login")
