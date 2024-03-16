@@ -1,6 +1,5 @@
 package org.backend.issuementor.services.implementations;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.backend.issuementor.services.JWTService;
 import org.springframework.stereotype.Service;
