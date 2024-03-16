@@ -9,4 +9,5 @@ public interface UserService {
     boolean existsByEmail(String email);
     User saveEncoded(User user);
     User saveUnencoded(User user);
+    void delete(User user);
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.backend.issuementor.enumerators.Gender;
+import org.backend.issuementor.enumerators.Role;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -46,12 +48,12 @@ public class User {
     @Column(name = "login_date")
     private Timestamp loginDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gender_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @ManyToOne(cascade = CascadeType.ALL)

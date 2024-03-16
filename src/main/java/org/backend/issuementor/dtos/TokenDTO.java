@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoginResponseDTO {
+public class TokenDTO {
     private String token;
     private long expiration;
 }

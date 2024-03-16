@@ -2,16 +2,6 @@ DROP DATABASE IF EXISTS issuementor;
 CREATE DATABASE IF NOT EXISTS issuementor;
 USE issuementor;
 
-CREATE TABLE roles (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL
-);
-
-CREATE TABLE genders (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL
-);
-
 CREATE TABLE addresses (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     street VARCHAR(150) NOT NULL,
@@ -36,39 +26,25 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL,
     phone VARCHAR(20) UNIQUE NOT NULL,
     birth_date DATE NOT NULL,
-    creation_date TIMESTAMP,
+    creation_date TIMESTAMP NOT NULL,
     login_date TIMESTAMP,
-    role_id BIGINT,
-    gender_id BIGINT NOT NULL,
+    role ENUM('USER', 'ADMIN', 'TECHNICIAN') DEFAULT 'USER',
+    gender ENUM('MALE', 'FEMALE', 'OTHER') NOT NULL,
     address_id BIGINT,
     company_id BIGINT,
-    FOREIGN KEY (role_id) REFERENCES roles(id),
-    FOREIGN KEY (gender_id) REFERENCES genders(id),
     FOREIGN KEY (address_id) REFERENCES addresses(id),
     FOREIGN KEY (company_id) REFERENCES companies(id)
-);
-
-CREATE TABLE priorities (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL
-);
-
-CREATE TABLE statuses (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE incidences (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    creation_date TIMESTAMP,
-    priority_id BIGINT NOT NULL,
-    status_id BIGINT NOT NULL,
+    creation_date TIMESTAMP NOT NULL,
+    priority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL,
+    status ENUM('OPEN', 'PENDING', 'RESOLVED', 'CLOSED') DEFAULT 'OPEN',
     user_id BIGINT NOT NULL,
     technician_id BIGINT,
-    FOREIGN KEY (priority_id) REFERENCES priorities(id),
-    FOREIGN KEY (status_id) REFERENCES statuses(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (technician_id) REFERENCES users(id)
 );
@@ -77,7 +53,7 @@ CREATE TABLE attachments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
-    creation_date TIMESTAMP,
+    creation_date TIMESTAMP NOT NULL,
     incidence_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     FOREIGN KEY (incidence_id) REFERENCES incidences(id),
@@ -110,7 +86,7 @@ CREATE TABLE product_categories (
 CREATE TABLE comments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     content TEXT NOT NULL,
-    creation_date TIMESTAMP,
+    creation_date TIMESTAMP NOT NULL,
     user_id BIGINT NOT NULL,
     incidence_id BIGINT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),

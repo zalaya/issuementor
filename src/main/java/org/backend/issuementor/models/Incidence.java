@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.backend.issuementor.enumerators.Priority;
+import org.backend.issuementor.enumerators.Status;
 
 import java.sql.Timestamp;
 
@@ -27,12 +29,12 @@ public class Incidence {
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "priority_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", nullable = false)
     private Priority priority;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
 
     @ManyToOne

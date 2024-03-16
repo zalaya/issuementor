@@ -5,7 +5,6 @@ import org.backend.issuementor.repositories.UserRepository;
 import org.backend.issuementor.services.PasswordService;
 import org.backend.issuementor.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,5 +37,10 @@ public class UserServiceImplementation implements UserService {
     @Override
     public User saveUnencoded(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }
