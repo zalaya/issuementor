@@ -22,7 +22,7 @@ public class User {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "surname", length = 100)
+    @Column(name = "surname", length = 100, nullable = false)
     private String surname;
 
     @Column(name = "username", length = 50, unique = true, nullable = false)
@@ -37,7 +37,7 @@ public class User {
     @Column(name = "phone", length = 20, unique = true, nullable = false)
     private String phone;
 
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
     @Column(name = "creation_date")
@@ -47,7 +47,7 @@ public class User {
     private Timestamp loginDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -55,7 +55,7 @@ public class User {
     private Gender gender;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", nullable = false)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @ManyToOne(cascade = CascadeType.ALL)

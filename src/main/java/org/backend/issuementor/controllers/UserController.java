@@ -1,11 +1,11 @@
 package org.backend.issuementor.controllers;
 
-import org.backend.issuementor.dtos.CredentialsDTO;
-import org.backend.issuementor.dtos.UserDTO;
-import org.backend.issuementor.mappers.UserMapper;
+import org.backend.issuementor.dtos.LoginRequestDTO;
+import org.backend.issuementor.dtos.SignupRequestDTO;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
 import org.backend.issuementor.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,27 +31,30 @@ public class UserController {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody User user) {
-        if (userService.existsByEmail(user.getEmail())) {
+    public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequest) {
+        if (userService.existsByEmail(signupRequest.getEmail())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        user.setCreationDate(Timestamp.from(Instant.now()));
-        userService.saveEncoded(user);
+        signupRequest.setCreationDate(Timestamp.from(Instant.now()));
+        userService.saveEncoded(modelMapper.map(signupRequest, User.class));
 
-        return new ResponseEntity<>(UserMapper.toUserDTO(user), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody CredentialsDTO credentials) {
-        Optional<User> databaseUser = userService.findByEmail(credentials.getEmail());
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        Optional<User> databaseUser = userService.findByEmail(loginRequest.getEmail());
 
         if (databaseUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (!passwordEncoder.matches(credentials.getPassword(), databaseUser.get().getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
