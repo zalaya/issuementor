@@ -1,17 +1,17 @@
 package org.backend.issuementor.controllers;
 
 import org.backend.issuementor.dtos.LoginRequestDTO;
+import org.backend.issuementor.dtos.LoginResponseDTO;
 import org.backend.issuementor.dtos.SignupRequestDTO;
+import org.backend.issuementor.dtos.SignupResponseDTO;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
 import org.backend.issuementor.services.MapperService;
 import org.backend.issuementor.services.PasswordService;
 import org.backend.issuementor.services.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,32 +37,38 @@ public class UserController {
     private MapperService mapperService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequest) {
-        if (userService.existsByEmail(signupRequest.getEmail())) {
+    public ResponseEntity<?> signup(@RequestBody SignupRequestDTO request) {
+        if (userService.existsByEmail(request.getEmail())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        signupRequest.setCreationDate(Timestamp.from(Instant.now()));
-        userService.saveEncoded(mapperService.map(signupRequest, User.class));
+        request.setCreationDate(Timestamp.from(Instant.now()));
+        User user = userService.saveEncoded(mapperService.map(request, User.class));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new SignupResponseDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail()
+        ), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
-        Optional<User> databaseUser = userService.findByEmail(loginRequest.getEmail());
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
+        Optional<User> databaseUser = userService.findByEmail(request.getEmail());
 
         if (databaseUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        if (!passwordService.validate(loginRequest.getPassword(), databaseUser.get().getPassword())) {
+        if (!passwordService.validate(request.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         databaseUser.get().setLoginDate(Timestamp.from(Instant.now()));
         userService.saveUnencoded(databaseUser.get());
 
-        return new ResponseEntity<>(jwtService.generate(databaseUser.get().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginResponseDTO(
+            jwtService.generate(databaseUser.get().getId()),
+            jwtService.getExpiration()
+        ), HttpStatus.OK);
     }
 }
