@@ -1,11 +1,13 @@
 package org.backend.issuementor.models;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.backend.issuementor.enumerators.Gender;
 import org.backend.issuementor.enumerators.Role;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.sql.Date;
 import java.sql.Timestamp;

@@ -4,6 +4,7 @@ import org.backend.issuementor.dtos.CredentialsDTO;
 import org.backend.issuementor.dtos.TokenDTO;
 import org.backend.issuementor.dtos.AdvancedUserDTO;
 import org.backend.issuementor.dtos.BasicUserDTO;
+import org.backend.issuementor.enumerators.Role;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
 import org.backend.issuementor.services.MapperService;
@@ -40,6 +41,7 @@ public class UserController {
         }
 
         request.setCreationDate(Timestamp.from(Instant.now()));
+        request.setRole(Role.USER);
         User user = userService.saveEncoded(mapperService.map(request, User.class));
 
         return new ResponseEntity<>(mapperService.map(user, BasicUserDTO.class), HttpStatus.OK);
