@@ -4,6 +4,8 @@ import org.backend.issuementor.dtos.LoginRequestDTO;
 import org.backend.issuementor.dtos.SignupRequestDTO;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.JWTService;
+import org.backend.issuementor.services.MapperService;
+import org.backend.issuementor.services.PasswordService;
 import org.backend.issuementor.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,13 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordService passwordService;
 
     @Autowired
     private JWTService jwtService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private MapperService mapperService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequest) {
@@ -41,7 +43,7 @@ public class UserController {
         }
 
         signupRequest.setCreationDate(Timestamp.from(Instant.now()));
-        userService.saveEncoded(modelMapper.map(signupRequest, User.class));
+        userService.saveEncoded(mapperService.map(signupRequest, User.class));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -54,7 +56,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), databaseUser.get().getPassword())) {
+        if (!passwordService.validate(loginRequest.getPassword(), databaseUser.get().getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 

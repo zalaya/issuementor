@@ -2,6 +2,7 @@ package org.backend.issuementor.services.implementations;
 
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.repositories.UserRepository;
+import org.backend.issuementor.services.PasswordService;
 import org.backend.issuementor.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ public class UserServiceImplementation implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordService passwordService;
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -29,7 +30,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User saveEncoded(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordService.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
