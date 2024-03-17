@@ -1,13 +1,11 @@
 package org.backend.issuementor.models;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.backend.issuementor.enumerators.Gender;
 import org.backend.issuementor.enumerators.Role;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -23,25 +21,25 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "name", length = 50)
     private String name;
 
-    @Column(name = "surname", length = 100, nullable = false)
+    @Column(name = "surname", length = 100)
     private String surname;
 
-    @Column(name = "username", length = 50, unique = true, nullable = false)
+    @Column(name = "username", length = 50)
     private String username;
 
-    @Column(name = "email", length = 100, unique = true, nullable = false)
+    @Column(name = "email", length = 100)
     private String email;
 
-    @Column(name = "password", length = 100, nullable = false)
+    @Column(name = "password", length = 100)
     private String password;
 
-    @Column(name = "phone", length = 20, unique = true, nullable = false)
+    @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private Date birthDate;
 
     @Column(name = "creation_date")
@@ -51,18 +49,18 @@ public class User {
     private Timestamp loginDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private Gender gender;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
 }

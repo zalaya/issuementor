@@ -37,13 +37,13 @@ CREATE TABLE users (
 );
 
 CREATE TABLE products (
-                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                          name VARCHAR(100),
-                          description TEXT,
-                          user_id BIGINT,
-                          company_id BIGINT,
-                          FOREIGN KEY (user_id) REFERENCES users(id),
-                          FOREIGN KEY (company_id) REFERENCES companies(id)
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    description TEXT,
+    user_id BIGINT,
+    company_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (company_id) REFERENCES companies(id)
 );
 
 CREATE TABLE incidences (

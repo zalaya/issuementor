@@ -16,10 +16,10 @@ public class Company {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 }

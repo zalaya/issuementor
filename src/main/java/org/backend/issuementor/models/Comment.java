@@ -18,17 +18,17 @@ public class Comment {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content")
     private String content;
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "incidence_id", nullable = false)
+    @JoinColumn(name = "incidence_id")
     private Incidence incidence;
 }

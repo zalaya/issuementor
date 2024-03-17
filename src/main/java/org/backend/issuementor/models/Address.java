@@ -16,15 +16,15 @@ public class Address {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "street", length = 150, nullable = false)
+    @Column(name = "street", length = 150)
     private String street;
 
-    @Column(name = "city", length = 100, nullable = false)
+    @Column(name = "city", length = 100)
     private String city;
 
-    @Column(name = "country", length = 100, nullable = false)
+    @Column(name = "country", length = 100)
     private String country;
 
-    @Column(name = "postal_code", length = 20, nullable = false)
+    @Column(name = "postal_code", length = 20)
     private String postalCode;
 }

@@ -18,20 +18,20 @@ public class Attachment {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "url", nullable = false)
+    @Column(name = "url")
     private String url;
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "incidence_id", nullable = false)
+    @JoinColumn(name = "incidence_id")
     private Incidence incidence;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 }
