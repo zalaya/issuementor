@@ -33,7 +33,6 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     @Autowired
     private JWTService jwtService;
 
-
     @Override
     public ResponseEntity<?> signup(SignupRequestDTO request) {
         if (userService.existsByEmail(request.getEmail())) {
@@ -44,9 +43,13 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        User user = userService.saveEncoded(modelMapper.map(request, User.class));
-
-        return new ResponseEntity<>(modelMapper.map(user, SignupResponseDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(
+            modelMapper.map(
+                userService.saveEncoded(modelMapper.map(request, User.class)),
+                SignupResponseDTO.class
+            ),
+            HttpStatus.OK
+        );
     }
 
     @Override
@@ -61,9 +64,12 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
         userService.saveUnencoded(user.get());
 
-        return new ResponseEntity<>(new LoginResponseDTO(
-            jwtService.generate(user.get().getId()),
-            jwtService.getExpiration()
-        ), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new LoginResponseDTO(
+                jwtService.generate(user.get().getId()),
+                jwtService.getExpiration()
+            ),
+            HttpStatus.OK
+        );
     }
 }
