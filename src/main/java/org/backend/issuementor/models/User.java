@@ -37,20 +37,20 @@ public class User {
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     private Timestamp creationDate;
 
     @Column(name = "login_date")
     private Timestamp loginDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private Role role;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    @Column(name = "verified", nullable = false)
+    @Column(name = "verified")
     private boolean verified;
 }
