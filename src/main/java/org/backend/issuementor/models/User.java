@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.backend.issuementor.enumerators.Gender;
 import org.backend.issuementor.enumerators.Role;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -37,20 +39,20 @@ public class User {
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false, insertable = false)
     private Timestamp creationDate;
 
     @Column(name = "login_date")
     private Timestamp loginDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false, insertable = false)
     private Role role;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    @Column(name = "verified")
+    @Column(name = "verified", nullable = false, insertable = false)
     private boolean verified;
 }
