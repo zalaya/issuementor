@@ -16,3 +16,16 @@ CREATE TABLE users (
     gender ENUM('MALE', 'FEMALE', 'OTHER') NOT NULL,
     verified BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+CREATE TABLE incidences (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(150) NOT NULL,
+    description TEXT,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    priority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL DEFAULT 'LOW',
+    status ENUM('TODO', 'DOING', 'DONE') NOT NULL DEFAULT 'TODO',
+    user_id BIGINT NOT NULL,
+    technician_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (technician_id) REFERENCES users(id)
+)
