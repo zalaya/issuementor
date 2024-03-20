@@ -23,7 +23,7 @@ CREATE TABLE incidences (
     description TEXT,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     priority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL DEFAULT 'LOW',
-    status ENUM('TODO', 'DOING', 'DONE') NOT NULL DEFAULT 'TODO',
+    status ENUM('OPEN', 'PENDING', 'IN_PROCESS', 'RESOLVED', 'CLOSED') NOT NULL DEFAULT 'OPEN',
     user_id BIGINT NOT NULL,
     technician_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id),
