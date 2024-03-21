@@ -1,49 +1,10 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            text-align: center;
-            padding-top: 50px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .verify-link {
-            display: inline-block;
-            background-color: #007bff;
-            color: #000000;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        .verify-link:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Verify you account!</h1>
-        <p>You are one click away.</p>
-        <a class="verify-link" th:href="@{'http://localhost:8080/api/authentication/verify?email=' + ${email} + '&amp;token=' + ${token}}">Verify</a>
+<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0; text-align: center;">
+    <div style="max-width: 600px; margin: 50px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <h1 style="font-size: 24px; margin-bottom: 20px;">Verify you account!</h1>
+        <a style="font-size: 16px; margin-bottom: 20px; background-color: burlywood; padding: 0.5rem; border-radius: 8px; cursor: pointer; text-decoration: none;" th:href="@{'http://localhost:8080/api/authentication/verify?email=' + ${email} + '&amp;token=' + ${token}}">Verify</a>
     </div>
 </body>
 </html>
+
