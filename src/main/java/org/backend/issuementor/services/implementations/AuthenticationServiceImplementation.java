@@ -1,14 +1,12 @@
 package org.backend.issuementor.services.implementations;
 
+import jakarta.mail.MessagingException;
 import org.backend.issuementor.dtos.LoginRequestDTO;
 import org.backend.issuementor.dtos.LoginResponseDTO;
 import org.backend.issuementor.dtos.SignupRequestDTO;
 import org.backend.issuementor.dtos.SignupResponseDTO;
 import org.backend.issuementor.models.User;
-import org.backend.issuementor.services.AuthenticationService;
-import org.backend.issuementor.services.JWTService;
-import org.backend.issuementor.services.PasswordService;
-import org.backend.issuementor.services.UserService;
+import org.backend.issuementor.services.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public ResponseEntity<?> signup(SignupRequestDTO request) {
         if (userService.existsByEmail(request.getEmail())) {
@@ -43,9 +44,17 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        User user = userService.saveEncoded(modelMapper.map(request, User.class));
+
+        try {
+            emailService.send(user.getEmail(), jwtService.generate(user.getId()));
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
         return new ResponseEntity<>(
             modelMapper.map(
-                userService.saveEncoded(modelMapper.map(request, User.class)),
+                user,
                 SignupResponseDTO.class
             ),
             HttpStatus.OK
@@ -71,5 +80,19 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             ),
             HttpStatus.OK
         );
+    }
+
+    @Override
+    public ResponseEntity<?> verify(String email, String token) {
+        Optional<User> user = userService.findByEmail(email);
+
+        if (user.isEmpty() || !jwtService.validate(token)) {
+            return new ResponseEntity<>("Verification failed.", HttpStatus.UNAUTHORIZED);
+        }
+
+        user.get().setVerified(true);
+        userService.saveEncoded(user.get());
+
+        return new ResponseEntity<>("Verification succeeded", HttpStatus.OK);
     }
 }

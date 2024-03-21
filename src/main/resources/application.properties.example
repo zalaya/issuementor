@@ -1,0 +1,10 @@
+spring.datasource.url = example
+spring.datasource.username = example
+spring.datasource.password = example
+
+spring.mail.host = example
+spring.mail.port = example
+spring.mail.username = example
+spring.mail.password = example
+spring.mail.properties.mail.smtp.auth = example
+spring.mail.properties.mail.smtp.starttls.enable = example

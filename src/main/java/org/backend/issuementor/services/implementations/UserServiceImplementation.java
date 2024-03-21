@@ -19,11 +19,6 @@ public class UserServiceImplementation implements UserService {
     private PasswordService passwordService;
 
     @Override
-    public Optional<User> findById(long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -31,11 +26,6 @@ public class UserServiceImplementation implements UserService {
     @Override
     public Optional<User> findByUsernameOrEmail(String identification) {
         return userRepository.findByUsernameOrEmail(identification);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
     }
 
     @Override
