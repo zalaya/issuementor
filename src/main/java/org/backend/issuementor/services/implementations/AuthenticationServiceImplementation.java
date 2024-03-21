@@ -52,13 +52,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             throw new RuntimeException(e);
         }
 
-        return new ResponseEntity<>(
-            modelMapper.map(
-                user,
-                SignupResponseDTO.class
-            ),
-            HttpStatus.OK
-        );
+        return new ResponseEntity<>(modelMapper.map(user, SignupResponseDTO.class), HttpStatus.OK);
     }
 
     @Override
@@ -70,16 +64,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         }
 
         user.get().setLoginDate(Timestamp.from(Instant.now()));
-
         userService.saveUnencoded(user.get());
 
-        return new ResponseEntity<>(
-            new LoginResponseDTO(
-                jwtService.generate(user.get().getId()),
-                jwtService.getExpiration()
-            ),
-            HttpStatus.OK
-        );
+        return new ResponseEntity<>(new LoginResponseDTO(jwtService.generate(user.get().getId()), jwtService.getExpiration()), HttpStatus.OK);
     }
 
     @Override

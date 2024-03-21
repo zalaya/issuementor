@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS issuementor;
 CREATE DATABASE IF NOT EXISTS issuementor;
 USE issuementor;
 
+SET GLOBAL time_zone = 'Europe/Madrid';
+
 CREATE TABLE users (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
