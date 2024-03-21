@@ -1,7 +1,6 @@
 package org.backend.issuementor.services.implementations;
 
 import org.backend.issuementor.dtos.AdvancedSafeUserDTO;
-import org.backend.issuementor.dtos.BasicSafeUserDTO;
 import org.backend.issuementor.enumerators.Role;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.repositories.UserRepository;
