@@ -1,10 +1,10 @@
 package org.backend.issuementor.services.implementations;
 
 import jakarta.mail.MessagingException;
-import org.backend.issuementor.dtos.LoginRequestDTO;
-import org.backend.issuementor.dtos.LoginResponseDTO;
-import org.backend.issuementor.dtos.SignupRequestDTO;
-import org.backend.issuementor.dtos.SignupResponseDTO;
+import org.backend.issuementor.dtos.CredentialsDTO;
+import org.backend.issuementor.dtos.TokenDTO;
+import org.backend.issuementor.dtos.UnsafeUserDTO;
+import org.backend.issuementor.dtos.BasicSafeUserDTO;
 import org.backend.issuementor.models.User;
 import org.backend.issuementor.services.*;
 import org.modelmapper.ModelMapper;
@@ -35,7 +35,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private EmailService emailService;
 
     @Override
-    public ResponseEntity<?> signup(SignupRequestDTO request) {
+    public ResponseEntity<?> signup(UnsafeUserDTO request) {
         if (userService.existsByEmail(request.getEmail())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -52,33 +52,37 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             throw new RuntimeException(e);
         }
 
-        return new ResponseEntity<>(modelMapper.map(user, SignupResponseDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(user, BasicSafeUserDTO.class), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<?> login(LoginRequestDTO request) {
-        Optional<User> user = userService.findByUsernameOrEmail(request.getIdentification());
+    public ResponseEntity<?> login(CredentialsDTO request) {
+        Optional<User> databaseUser = userService.findByUsernameOrEmail(request.getIdentification());
 
-        if (user.isEmpty()) {
+        if (databaseUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        user.get().setLoginDate(Timestamp.from(Instant.now()));
-        userService.saveUnencoded(user.get());
+        if (!databaseUser.get().isVerified()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-        return new ResponseEntity<>(new LoginResponseDTO(jwtService.generate(user.get().getId()), jwtService.getExpiration()), HttpStatus.OK);
+        databaseUser.get().setLoginDate(Timestamp.from(Instant.now()));
+        userService.saveUnencoded(databaseUser.get());
+
+        return new ResponseEntity<>(new TokenDTO(jwtService.generate(databaseUser.get().getId()), jwtService.getExpiration()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> verify(String email, String token) {
-        Optional<User> user = userService.findByEmail(email);
+        Optional<User> databaseUser = userService.findByEmail(email);
 
-        if (user.isEmpty() || !jwtService.validate(token)) {
+        if (databaseUser.isEmpty() || !jwtService.validate(token)) {
             return new ResponseEntity<>("Verification failed.", HttpStatus.UNAUTHORIZED);
         }
 
-        user.get().setVerified(true);
-        userService.saveEncoded(user.get());
+        databaseUser.get().setVerified(true);
+        userService.saveEncoded(databaseUser.get());
 
         return new ResponseEntity<>("Verification succeeded", HttpStatus.OK);
     }
