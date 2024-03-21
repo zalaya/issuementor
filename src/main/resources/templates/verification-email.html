@@ -1,9 +1,18 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0; text-align: center;">
-    <div style="max-width: 600px; margin: 50px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-        <h1 style="font-size: 24px; margin-bottom: 20px;">Verify you account!</h1>
-        <a style="font-size: 16px; margin-bottom: 20px; background-color: burlywood; padding: 0.5rem; border-radius: 8px; cursor: pointer; text-decoration: none;" th:href="@{'http://localhost:8080/api/authentication/verify?email=' + ${email} + '&amp;token=' + ${token}}">Verify</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Email</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0;">
+    <div style="border: 1px solid #ddd; max-width: 600px; margin: 30px auto; padding: 20px 2.5rem 2.5rem 2.5rem; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <p style="font-size: 16px; margin-bottom: 2rem;">Hello <span th:text="${username}"></span>,</p>
+        <p style="font-size: 16px; margin-bottom: 3rem;">Welcome to Issuementor! You have successfully registered for our service.<br><br>To complete the registration process and start using Issuementor, please click the button below to verify your account.</p>
+        <div style="text-align: center">
+            <a style="font-size: 16px; background-color: #4a90e2; color: white; padding: 1rem 2rem; border-radius: 2px; cursor: pointer; text-decoration: none;" th:href="@{'http://localhost:8080/api/authentication/verify?email=' + ${email} + '&amp;token=' + ${token}}">Verify</a>
+        </div>
+        <p style="margin-top: 3rem; font-size: 16px;">Thank you,<br>The Issuementor team</p>
     </div>
 </body>
 </html>

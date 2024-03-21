@@ -21,7 +21,7 @@ public class EmailServiceImplementation implements EmailService {
 
     @Override
     @Async
-    public void send(String email, String token) throws MessagingException {
+    public void send(String email, String username, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
@@ -31,6 +31,7 @@ public class EmailServiceImplementation implements EmailService {
         Context context = new Context();
 
         context.setVariable("email", email);
+        context.setVariable("username", username);
         context.setVariable("token", token);
 
         helper.setText(templateEngine.process("verification-email", context), true);

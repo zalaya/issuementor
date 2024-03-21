@@ -47,7 +47,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         User user = userService.saveEncoded(modelMapper.map(request, User.class));
 
         try {
-            emailService.send(user.getEmail(), jwtService.generate(user.getId()));
+            emailService.send(user.getEmail(), user.getUsername(), jwtService.generate(user.getId()));
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
