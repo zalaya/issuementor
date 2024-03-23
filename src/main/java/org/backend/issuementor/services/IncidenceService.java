@@ -1,5 +1,9 @@
 package org.backend.issuementor.services;
 
-public interface IncidenceService {
+import org.backend.issuementor.models.Incidence;
 
+import java.util.Optional;
+
+public interface IncidenceService {
+    Optional<Incidence> findById(long id);
 }
