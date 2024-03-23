@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface IncidenceService {
     Optional<Incidence> findById(long id);
     List<Incidence> findByUser(User user);
+    List<Incidence> findByTechnician(User user);
 }

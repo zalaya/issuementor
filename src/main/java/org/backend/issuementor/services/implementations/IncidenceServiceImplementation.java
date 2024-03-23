@@ -24,4 +24,9 @@ public class IncidenceServiceImplementation implements IncidenceService {
     public List<Incidence> findByUser(User user) {
         return incidenceRepository.findByUser(user);
     }
+
+    @Override
+    public List<Incidence> findByTechnician(User user) {
+        return incidenceRepository.findByTechnician(user);
+    }
 }

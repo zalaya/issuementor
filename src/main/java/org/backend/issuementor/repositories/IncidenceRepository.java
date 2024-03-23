@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IncidenceRepository extends JpaRepository<Incidence, Long> {
     List<Incidence> findByUser(User user);
+    List<Incidence> findByTechnician(User user);
 }
