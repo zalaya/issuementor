@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS issuementor;
-CREATE DATABASE IF NOT EXISTS issuementor;
-USE issuementor;
+DROP DATABASE IF EXISTS jauth;
+CREATE DATABASE IF NOT EXISTS jauth;
+USE jauth;
 
 SET GLOBAL time_zone = 'Europe/Madrid';
 
